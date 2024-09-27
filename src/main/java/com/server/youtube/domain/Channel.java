@@ -26,6 +26,7 @@ public class Channel {
     @Column(name = "channel_name")
     private String channelName;
 
+    @Column(name = "id")
     private String id;
 
 
