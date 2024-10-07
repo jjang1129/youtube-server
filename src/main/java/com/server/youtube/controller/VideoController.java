@@ -97,8 +97,9 @@ public class VideoController {
 
 
     @GetMapping("/video/{videoCode}")
-     public ResponseEntity view (@PathVariable (name="code") int code ){
+     public ResponseEntity view (@PathVariable (name="videoCode") int code ){
 
+        System.out.println("gdgd");
     return ResponseEntity.ok(service.view(code));
 
 }
