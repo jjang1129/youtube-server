@@ -33,11 +33,16 @@ public class MemberController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody Member vo ){
          Member member = service.login(vo.getId(), vo.getPassword());
-
+           System.out.println(member);
          if(member != null){
              String token = tokenProvider.create(member);
             System.out.println("login!");
-             return ResponseEntity.status(HttpStatus.OK).body(token);
+             return ResponseEntity.status(HttpStatus.OK).body(MemberDTO
+                     .builder()
+                     .id(member.getId())
+                     .token(token)
+                     .build());
+
          }
          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
     }

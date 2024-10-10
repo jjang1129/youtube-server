@@ -1,9 +1,12 @@
 package com.server.youtube.service;
 
 
+import com.server.youtube.domain.Member;
 import com.server.youtube.domain.Subscribe;
 import com.server.youtube.repo.SubscribeDAO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,15 +17,31 @@ public class SubscribeService {
     @Autowired
     private SubscribeDAO dao;
 
+
+    // 사용자 정보 가져오는법 - ID
+    private String getId(){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if( auth != null && auth.isAuthenticated()){
+            Member member = (Member) auth.getPrincipal();
+            return member.getId();
+        }
+        return  null;
+    }
+
+
+
     // 구독 추가
 
     public void create(Subscribe vo){
+        vo.setId(getId());
         dao.save(vo);
 
     }
 
     // 구독 취소
     public void remove(int subCode){
+       System.out.println("구독코드 : "+ subCode);
         dao.deleteById(subCode);
     }
 
@@ -32,14 +51,10 @@ public class SubscribeService {
       return dao.count(channelCode);
     }
 
-    public int findSub(Subscribe vo){
+  // 로그인한 사람의 해당 채널의 구독 체크 여부
+    public Subscribe check (int channelCode){
 
-        List<Integer> num = dao.findSub(vo.getChannelCode() , vo.getId());
-        if(num.size() > 0) {
-            int num2 = num.get(0);
-            return num2;
-        }
-        return  0;
+        return dao.check(channelCode, getId());
     }
 
 }

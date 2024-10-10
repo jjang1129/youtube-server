@@ -20,16 +20,16 @@ public class SubscribeController {
 
 
 
-    // 구독
-    @PostMapping("/sub")
+    // 로그인한 사람이 구독
+    @PostMapping("/private/sub")
     public ResponseEntity create(@RequestBody  Subscribe vo){
                                  // JSON 방식으로 받게 될거임 그러면 Request BOdy 명시
         System.out.println("구독 컨트롤러 연결!");
         service.create(vo);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-    // 구독취소
-    @DeleteMapping("/sub/{subCode}")
+    // 로그인한 사람이 구독취소
+    @DeleteMapping("/private/sub/{subCode}")
     public ResponseEntity remove(@PathVariable(name="subCode") int subCode){
 
         service.remove(subCode);
@@ -43,15 +43,14 @@ public class SubscribeController {
         return ResponseEntity.ok(service.count(channelCode));
     }
 
-    // 구독여부확인
+    // 로그인한 사람의 해당 채널의 구독 체크 여부
 
-    @GetMapping("/sub")
-    public ResponseEntity sub(@RequestParam(name = "id", required = false) String id,@RequestParam(name = "channelCode", required = false) int channelCode ){
-        Subscribe sub = Subscribe.builder().id(id).channelCode(channelCode).build();
-        log.info("객체 : " + sub);
-        int num = service.findSub(sub);
-        log.info("해당유저가 구독했다면 구독코드 : " + num );
-        return  ResponseEntity.ok(num);
+    @GetMapping("/private/sub/{channelCode}")
+    public ResponseEntity check(@PathVariable  (name="channelCode") int channelCode){
+
+
+
+        return  ResponseEntity.ok(service.check(channelCode));
     }
 
 

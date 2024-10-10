@@ -14,7 +14,7 @@ public interface SubscribeDAO extends JpaRepository<Subscribe, Integer> {
     @Query(value = "SELECT count(*) FROM subscribe WHERE channel_code = :channelCode", nativeQuery = true)
     int count(@Param("channelCode") int channelCode); // 받아오는값 @Param으로 명시해주기
 
-    @Query(value = "SELECT sub_code FROM subscribe WHERE channel_code = :channelCode AND id = :id", nativeQuery = true)
-    List<Integer> findSub(@Param("channelCode") int channelCode, @Param("id") String id);
+    @Query(value = "SELECT * FROM subscribe WHERE channel_code = :channelCode AND id = :id", nativeQuery = true)
+    Subscribe check(@Param("channelCode") int channelCode, @Param("id") String id);
 
 }

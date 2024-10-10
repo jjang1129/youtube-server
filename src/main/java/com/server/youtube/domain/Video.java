@@ -37,7 +37,7 @@ public class Video {
     @Column(name="video_desc")
     private String videoDesc;
 
-    @ManyToOne
-    @JoinColumn(name="channel_code")
-    private Channel channel;
+    @ManyToOne // 비디오 (many) 채널 (one)
+    @JoinColumn(name="channel_code")  // 채널(one)의 Primary key
+    private Channel channel;           // 채널 (one)의 객체
 }
